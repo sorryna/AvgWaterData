@@ -3,38 +3,170 @@ namespace missingEA.Models
     public class ResultDataEA
     {
         public string _id { get; set; }
-        public double? IsAgriculture { get; set; }
-        public double? IsHouseHold { get; set; }
-        public double? IsHouseHoldGoodPlumbing { get; set; }
-        public double? IsAgricultureHasIrrigationField { get; set; }
-        public double? IsHouseHoldHasPlumbingDistrict { get; set; }
-        public double? IsHouseHoldHasPlumbingCountryside { get; set; }
-        public double? IsFactorialWaterQuality { get; set; }
-        public double? IsCommercialWaterQuality { get; set; }
-        public double? CountPopulation { get; set; }
-        public double? CountWorkingAge { get; set; }
-        public double? IsFactorial { get; set; }
-        public double? IsFactorialWaterTreatment { get; set; }
-        public double? IsCommunityWaterManagementHasWaterTreatment { get; set; }
+        /// <summary>
+        /// index1
+        /// </summary>
+        /// <value></value>
+        public int? IsAgriculture { get; set; }
+        /// <summary>
+        /// index2
+        /// </summary>
+        /// <value></value>
+        public int? IsHouseHold { get; set; }
+        /// <summary>
+        /// index3
+        /// </summary>
+        /// <value></value>
+        public int? IsHouseHoldGoodPlumbing { get; set; }
+        /// <summary>
+        /// index4
+        /// </summary>
+        /// <value></value>
+        public int? IsAgricultureHasIrrigationField { get; set; }
+        /// <summary>
+        /// index5
+        /// </summary>
+        /// <value></value>
+        public int? IsHouseHoldHasPlumbingDistrict { get; set; }
+        /// <summary>
+        /// index6
+        /// </summary>
+        /// <value></value>
+        public int? IsHouseHoldHasPlumbingCountryside { get; set; }
+        /// <summary>
+        /// index7
+        /// </summary>
+        /// <value></value>
+        public int? IsFactorialWaterQuality { get; set; }
+        /// <summary>
+        /// index8
+        /// </summary>
+        /// <value></value>
+        public int? IsCommercialWaterQuality { get; set; }
+        /// <summary>
+        /// index10
+        /// </summary>
+        /// <value></value>
+        public int? CountPopulation { get; set; }
+        /// <summary>
+        /// index11
+        /// </summary>
+        /// <value></value>
+        public int? CountWorkingAge { get; set; }
+        /// <summary>
+        /// index12
+        /// </summary>
+        /// <value></value>
+        public int? IsFactorial { get; set; }
+        /// <summary>
+        /// index13
+        /// </summary>
+        /// <value></value>
+        public int? IsFactorialWaterTreatment { get; set; }
+        /// <summary>
+        /// index14
+        /// </summary>
+        /// <value></value>
+        public int? IsCommunityWaterManagementHasWaterTreatment { get; set; }
+        /// <summary>
+        /// index15
+        /// </summary>
+        /// <value></value>
         public double? FieldCommunity { get; set; }
+        /// <summary>
+        /// indeex16
+        /// </summary>
+        /// <value></value>
         public double? AvgWaterHeightCm { get; set; }
+        /// <summary>
+        /// index17
+        /// </summary>
+        /// <value></value>
         public double? TimeWaterHeightCm { get; set; }
+        /// <summary>
+        /// index18
+        /// </summary>
+        /// <value></value>
         public double? HasntPlumbing { get; set; }
-        public double? IsGovernment { get; set; }
-        public double? IsGovernmentUsage { get; set; }
-        public double? IsGovernmentWaterQuality { get; set; }
-        public double? CommunityNatureDisaster { get; set; }
-        public double? IndustryHasWasteWaterTreatment { get; set; }
-        public double? PeopleInFloodedArea { get; set; }
-        public double? CountCommunity { get; set; }
-        public double? CountCommunityHasDisaster { get; set; }
-        public double? IsAllHouseHoldCountryside { get; set; }
-        public double? IsAllHouseHoldDistrict { get; set; }
-        public double? IsAllFactorial { get; set; }
-        public double? IsAllCommercial { get; set; }
+        /// <summary>
+        /// index19
+        /// </summary>
+        /// <value></value>
+        public int? IsGovernment { get; set; }
+        /// <summary>
+        /// index20
+        /// </summary>
+        /// <value></value>
+        public int? IsGovernmentUsage { get; set; }
+        /// <summary>
+        /// index21
+        /// </summary>
+        /// <value></value>
+        public int? IsGovernmentWaterQuality { get; set; }
+        /// <summary>
+        /// index22
+        /// </summary>
+        /// <value></value>
+        public int? CommunityNatureDisaster { get; set; }
+        /// <summary>
+        /// index24
+        /// </summary>
+        /// <value></value>
+        public int? IndustryHasWasteWaterTreatment { get; set; }
+        /// <summary>
+        /// index25
+        /// </summary>
+        /// <value></value>
+        public int? PeopleInFloodedArea { get; set; }
+        /// <summary>
+        /// index39
+        /// </summary>
+        /// <value></value>
+        public int? CountCommunity { get; set; }
+        /// <summary>
+        /// index40
+        /// </summary>
+        /// <value></value>
+        public int? CountCommunityHasDisaster { get; set; }
+        /// <summary>
+        /// index41
+        /// </summary>
+        /// <value></value>
+        public int? IsAllHouseHoldCountryside { get; set; }
+        /// <summary>
+        /// index42
+        /// </summary>
+        /// <value></value>
+        public int? IsAllHouseHoldDistrict { get; set; }
+        /// <summary>
+        /// index43
+        /// </summary>
+        /// <value></value>
+        public int? IsAllFactorial { get; set; }
+        /// <summary>
+        /// index44
+        /// </summary>
+        /// <value></value>
+        public int? IsAllCommercial { get; set; }
+        /// <summary>
+        /// index9.1EA
+        /// </summary>
+        /// <value></value>
         public double? CountGroundWaterUnit { get; set; }
+        /// <summary>
+        /// index9.2EA
+        /// </summary>
+        /// <value></value>
         public double? CountGroundWaterCom { get; set; }
+        /// <summary>
+        /// index23.1EA
+        /// </summary>
+        /// <value></value>
         public double? WaterSourcesUnit { get; set; }
+        /// <summary>
+        /// index23.2EA
+        /// </summary>
+        /// <value></value>
         public double? WaterSourcesCom { get; set; }
         public string AMP { get; set; }
         public string AMP_NAME { get; set; }
