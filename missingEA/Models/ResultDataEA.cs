@@ -1,3 +1,6 @@
+using Newtonsoft.Json;
+using System.Collections.Generic;
+
 namespace missingEA.Models
 {
     public class ResultDataEA
@@ -184,5 +187,22 @@ namespace missingEA.Models
         public string TAO_NAME { get; set; }
         public string VIL { get; set; }
         public string VIL_NAME { get; set; }
+        public int? DISTRICT { get; set; }
+        public int? MAP_STATUS { get; set; }
+        public int? Building { get; set; }
+        public int? Household { get; set; }
+        public int? population { get; set; }
+        public int? Agricultural_HH { get; set; }
+        public string ES_BUSI { get; set; }
+        public string ES_INDUS { get; set; }
+        public string ES_HOTEL { get; set; }
+        public string ES_PV_HOS { get; set; }
+        public string REMARK { get; set; }
+        public string linkcode { get; set; }
+        [JsonProperty("Center")]
+        public MongoDB.Bson.BsonDocument Center { get; set; }
+        public double? Flag { get; set; }
+
     }
+
 }

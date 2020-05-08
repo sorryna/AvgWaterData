@@ -1,5 +1,6 @@
 using missingEA.Models;
 using MongoDB.Driver;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -15,9 +16,9 @@ namespace missingEA
         {
             var client = new MongoClient("mongodb://firstclass:Th35F1rstCla55@mongoquickx4h3q4klpbxtq-vm0.southeastasia.cloudapp.azure.com/wdata");
             var database = client.GetDatabase("wdata");
-            CollectionResultDataEA = database.GetCollection<ResultDataEA>("ResultDataEA");
+            CollectionResultDataEA = database.GetCollection<ResultDataEA>("ResultNewDataEAClean");
             CollectionEAInfo = database.GetCollection<EAInfo>("ea");
-            CollectionResultDataAreaCode = database.GetCollection<ResultDataAreaCode>("ResultDataAreaCode");
+            CollectionResultDataAreaCode = database.GetCollection<ResultDataAreaCode>("ResultNewDataAreaCode");
         }
 
         public void EA()
@@ -83,8 +84,9 @@ namespace missingEA
                         TimeWaterHeightCm = findResultEA.Average(it => it.TimeWaterHeightCm),
                         WaterSourcesCom = findResultEA.Average(it => it.WaterSourcesCom),
                         WaterSourcesUnit = findResultEA.Average(it => it.WaterSourcesUnit),
+                        Flag=2,
                     };
-                    // TODO: Create it in Data Base
+                    CollectionResultDataEA.InsertOne(avg);
                 }
             }
         }
@@ -127,10 +129,54 @@ namespace missingEA
                         CubicMeterSurfaceForService = findResultArea.Average(it => it.CubicMeterSurfaceForService),
                         WaterSourcesCom = findResultArea.Average(it => it.WaterSourcesCom),
                         WaterSourcesUnit = findResultArea.Average(it => it.WaterSourcesUnit),
+                        Flag = 2
                     };
-                    // TODO: Create it in Data Base
+                    CollectionResultDataAreaCode.InsertOne(sum);
                 }
             }
+        }
+
+        public void MsArea(List<string> MsAreaMsArea)
+        {
+            foreach (var item in MsAreaMsArea)
+            {
+                var result = CollectionResultDataAreaCode.Find(it => it._id == item).FirstOrDefault();
+                var findEAInfo = CollectionEAInfo.Find(it => it.Area_Code == item).FirstOrDefault();
+                var findResultArea = CollectionResultDataAreaCode.Find(it => it.CWT == findEAInfo.CWT && it.AMP == findEAInfo.AMP).ToList();
+                var sum = new ResultDataAreaCode
+                {
+                    _id = item,
+                    REG = findEAInfo.REG,
+                    REG_NAME = findEAInfo.REG_NAME,
+                    CWT = findEAInfo.CWT,
+                    CWT_NAME = findEAInfo.CWT_NAME,
+                    AMP = findEAInfo.AMP,
+                    AMP_NAME = findEAInfo.AMP_NAME,
+                    TAM = findEAInfo.TAM,
+                    TAM_NAME = findEAInfo.TAM_NAME,
+                    CountGroundWaterCom = result.CountGroundWaterCom == 0 ? (int)findResultArea.Average(it => it.CountGroundWaterCom) : result.CountGroundWaterCom,
+                    CountGroundWaterUnit = result.CountGroundWaterUnit == 0 ? (int)findResultArea.Average(it => it.CountGroundWaterUnit) : result.CountGroundWaterUnit,
+                    CubicMeterGroundWaterForAgriculture = result.CubicMeterGroundWaterForAgriculture == 0 ? findResultArea.Average(it => it.CubicMeterGroundWaterForAgriculture) : result.CubicMeterGroundWaterForAgriculture,
+                    CubicMeterGroundWaterForDrink = result.CubicMeterGroundWaterForDrink == 0 ? findResultArea.Average(it => it.CubicMeterGroundWaterForDrink) : result.CubicMeterGroundWaterForDrink,
+                    CubicMeterGroundWaterForProduct = result.CubicMeterGroundWaterForProduct == 0 ? findResultArea.Average(it => it.CubicMeterGroundWaterForProduct) : result.CubicMeterGroundWaterForProduct,
+                    CubicMeterGroundWaterForService = result.CubicMeterGroundWaterForService == 0 ? findResultArea.Average(it => it.CubicMeterGroundWaterForService) : result.CubicMeterGroundWaterForService,
+                    CubicMeterGroundWaterForUse = result.CubicMeterGroundWaterForUse == 0 ? findResultArea.Average(it => it.CubicMeterGroundWaterForUse) : result.CubicMeterGroundWaterForUse,
+                    CubicMeterPlumbingForAgriculture = result.CubicMeterPlumbingForAgriculture == 0 ? findResultArea.Average(it => it.CubicMeterPlumbingForAgriculture) : result.CubicMeterPlumbingForAgriculture,
+                    CubicMeterPlumbingForDrink = result.CubicMeterPlumbingForDrink == 0 ? findResultArea.Average(it => it.CubicMeterPlumbingForDrink) : result.CubicMeterPlumbingForDrink,
+                    CubicMeterPlumbingForProduct = result.CubicMeterPlumbingForProduct == 0 ? findResultArea.Average(it => it.CubicMeterPlumbingForProduct) : result.CubicMeterPlumbingForProduct,
+                    CubicMeterPlumbingForService = result.CubicMeterPlumbingForService == 0 ? findResultArea.Average(it => it.CubicMeterPlumbingForService) : result.CubicMeterPlumbingForService,
+                    CubicMeterSurfaceForAgriculture = result.CubicMeterSurfaceForAgriculture == 0 ? findResultArea.Average(it => it.CubicMeterSurfaceForAgriculture) : result.CubicMeterSurfaceForAgriculture,
+                    CubicMeterSurfaceForDrink = result.CubicMeterSurfaceForDrink == 0 ? findResultArea.Average(it => it.CubicMeterSurfaceForDrink) : result.CubicMeterSurfaceForDrink,
+                    CubicMeterSurfaceForProduct = result.CubicMeterSurfaceForProduct == 0 ? findResultArea.Average(it => it.CubicMeterSurfaceForProduct) : result.CubicMeterSurfaceForProduct,
+                    CubicMeterSurfaceForService = result.CubicMeterSurfaceForService == 0 ? findResultArea.Average(it => it.CubicMeterSurfaceForService) : result.CubicMeterSurfaceForService,
+                    WaterSourcesCom = result.WaterSourcesCom == 0 ? findResultArea.Average(it => it.WaterSourcesCom) : result.WaterSourcesCom,
+                    WaterSourcesUnit = result.WaterSourcesUnit == 0 ? findResultArea.Average(it => it.WaterSourcesUnit) : result.WaterSourcesUnit,
+                    Flag = 2
+                };
+                //CollectionResultDataAreaCode.UpdateOne(it => it._id == item, Builders<ResultDataAreaCode>.Update.Set(x=>x.CountGroundWaterCom == sum.CountGroundWaterCom));
+                //CollectionResultDataAreaCode.ReplaceOne(it => it._id == item, sum);
+            }
+
         }
     }
 }

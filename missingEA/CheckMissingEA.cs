@@ -12,6 +12,7 @@ namespace missingEA
         IMongoCollection<ResultDataEA> CollectionResultDataEA { get; set; }
         IMongoCollection<ResultDataAreaCode> CollectionResultDataAreaCode { get; set; }
         IMongoCollection<EAInfo> CollectionEAInfo { get; set; }
+        IMongoCollection<ResultAreaCode> CollectionResultDataAreaCodenow { get; set; }
         public CheckMissingEA()
         {
             var client = new MongoClient("mongodb://firstclass:Th35F1rstCla55@mongoquickx4h3q4klpbxtq-vm0.southeastasia.cloudapp.azure.com/wdata");
@@ -19,6 +20,7 @@ namespace missingEA
             CollectionResultDataEA = database.GetCollection<ResultDataEA>("ResultDataEA");
             CollectionEAInfo = database.GetCollection<EAInfo>("ea");
             CollectionResultDataAreaCode = database.GetCollection<ResultDataAreaCode>("ResultDataAreaCode");
+            CollectionResultDataAreaCodenow = database.GetCollection<ResultAreaCode>("ReusltArea_CodeNow");
         }
 
         public List<string> missingEA()
@@ -41,10 +43,13 @@ namespace missingEA
             return result;
         }
 
-        public List<string> missingArea(){
+        public Tuple<List<string>, List<string>> missingArea()
+        {
             var allArea = CollectionEAInfo.Find(it => true).ToList();
             var group = allArea.GroupBy(it => it.Area_Code).ToList();
-            var result= new List<string>();
+            var result = new List<string>();
+            var listdataarea = new List<string>();
+            var dataarea = new ResultAreaCode();
             foreach (var item in group)
             {
                 var find = CollectionResultDataAreaCode.Find(it => it._id == item.Key).FirstOrDefault();
@@ -52,12 +57,22 @@ namespace missingEA
                 {
                     System.Console.WriteLine(item.Key + "  Not Found.");
                     result.Add(item.Key);
-                }else
+                }
+                else
                 {
-                    System.Console.WriteLine(item.Key + "  Found it.");
+                    var data = CollectionResultDataAreaCodenow.Find(it => it._id == find._id).FirstOrDefault();
+                    if (data != null)
+                    {
+                        if (data.inventory_docs.Count == 0)
+                        {
+                            listdataarea.Add(data._id);
+                        }
+                        System.Console.WriteLine(item.Key + "  Found it.");
+
+                    }
                 }
             }
-            return result;
+            return Tuple.Create(result, listdataarea);
         }
     }
 }

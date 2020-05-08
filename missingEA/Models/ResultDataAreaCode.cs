@@ -96,5 +96,6 @@ namespace missingEA.Models
         public string REG_NAME { get; set; }
         public string TAM { get; set; }
         public string TAM_NAME { get; set; }
+        public double? Flag { get; set; }
     }
 }
