@@ -2,6 +2,7 @@ using missingEA.Models;
 using MongoDB.Driver;
 using System.IO;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace missingEA
 {
@@ -10,6 +11,7 @@ namespace missingEA
         IMongoCollection<ResultDataEA> CollectionResultDataEA { get; set; }
         IMongoCollection<ResultDataAreaCode> CollectionResultDataAreaCode { get; set; }
         IMongoCollection<EAInfo> CollectionEAInfo { get; set; }
+        IMongoCollection<Survey> CollectionEASurvey { get; set; }
 
         public ManageEA()
         {
@@ -18,6 +20,7 @@ namespace missingEA
             CollectionResultDataEA = database.GetCollection<ResultDataEA>("ResultDataEA");
             CollectionEAInfo = database.GetCollection<EAInfo>("ea");
             CollectionResultDataAreaCode = database.GetCollection<ResultDataAreaCode>("ResultDataAreaCode");
+            CollectionEASurvey = database.GetCollection<Survey>("Survey");
         }
 
         public void EA()
@@ -85,6 +88,7 @@ namespace missingEA
                         WaterSourcesUnit = findResultEA.Average(it => it.WaterSourcesUnit),
                     };
                     // TODO: Create it in Data Base
+                    CollectionResultDataEA.InsertOne(avg);
                 }
             }
         }
@@ -129,8 +133,66 @@ namespace missingEA
                         WaterSourcesUnit = findResultArea.Average(it => it.WaterSourcesUnit),
                     };
                     // TODO: Create it in Data Base
+                    CollectionResultDataAreaCode.InsertOne(sum);
+                }
+                else
+                {
+
                 }
             }
+        }
+
+        public void GetStatus()
+        {
+            var ea = CollectionEAInfo.Find(it => true)
+            .Project(it => new
+            {
+                EA = it._id,
+                TAM = it.TAM,
+                TAM_NAME = it.TAM_NAME,
+                AMP = it.AMP,
+                AMP_NAME = it.AMP_NAME,
+                CWT = it.CWT,
+                CWT_NAME = it.CWT_NAME,
+                REG = it.REG,
+                DISTRICT = it.DISTRICT
+            })
+            .ToList();
+            var result = new List<Status>();
+            foreach (var item in ea)
+            {
+                var recs = CollectionEASurvey.Find(it => it.EA == item.EA && it.Enlisted == true).ToList();
+                var data = new Status{
+                    EA = item.EA,
+                    REG = item.REG,
+                    CWT = item.CWT,
+                    CWT_NAME = item.CWT_NAME,
+                    AMP = item.AMP,
+                    AMP_NAME = item.AMP_NAME,
+                    TAM = item.TAM,
+                    TAM_NAME = item.TAM_NAME,
+                    DISTRICT = item.DISTRICT,
+                    BuildingDoneAll = recs.Count(it => it.SampleType == "b" && it.Status == "done-all"),
+                    BuildingEyeOff = recs.Count(it => it.SampleType == "b" && it.Status == "eye-off"),
+                    BuildingMicOff = recs.Count(it => it.SampleType == "b" && it.Status == "mic-off"),
+                    BuildingSad = recs.Count(it => it.SampleType == "b" && it.Status == "sad"),
+                    BuildingCheckMark = recs.Count(it => it.SampleType == "b" && it.Status == "checkmark"),
+                    BuildingComplete = recs.Count(it => it.SampleType == "b" && it.Status == "complete"),
+                    BuildingPause = recs.Count(it => it.SampleType == "b" && it.Status == "pause"),
+                    BuildingRefresh = recs.Count(it => it.SampleType == "b" && it.Status == "refresh"),
+                    HouseholdComplete = recs.Count(it => it.SampleType == "u" && it.Status == "complete"),
+                    HouseholdEyeOff = recs.Count(it => it.SampleType == "u" && it.Status == "eye-off"),
+                    HouseholdMicOff = recs.Count(it => it.SampleType == "u" && it.Status == "mic-off"),
+                    HouseholdPause = recs.Count(it => it.SampleType == "u" && it.Status == "pause"),
+                    HouseholdRefresh = recs.Count(it => it.SampleType == "u" && it.Status == "refresh"),
+                    HouseholdSad = recs.Count(it => it.SampleType == "u" && it.Status == "sad"),
+                    HouseholdNull = recs.Count(it => it.SampleType == "u" && it.Status == null),
+                    ComunityComplete = recs.Count(it => it.SampleType == "c" && it.Status == "done-all"),
+                    ComunityPause = recs.Count(it => it.SampleType == "c" && it.Status == "pause"),
+                };
+                result.Add(data);
+            }
+            //TODO: write file
         }
     }
 }
